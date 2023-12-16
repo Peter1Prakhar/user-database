@@ -9,18 +9,42 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model storage_Ids{
+  id Int @id @default(autoincrement())
+  institutes Institute[]
+  institutemoredetail InstituteMoreDetails[]
+  subsection subSection[]
+  organisationDetails organisationDetails[]
+  trusteDetail  trusteeDetails[]
+  contactPerson contactPerson[]
+  question questionnaire[]
+  program programDetails[]
+  course courseDetails[]
+  landDetail landDetails[]
+  moreDetails moreLandInformation[]
+  buildingDetails buildingDetails[]
+  buildingMoreDetails buildingDetailsMoreDetails[]
+  laboratoryDetails laboratoryDetails[]
+  administrativeArea administrativeArea[]
+  ametiesArea ametiesArea[]
+  circulationArea circulationArea[]
+
+
+}
 model Institute {
   id Int @id @default(autoincrement())
-  currentApplicationNumber Int 
-  applicationType String //dropdown
-  currentStatus String //dropdown
+  currentApplicationNumber Int?
+  applicationType String? //dropdown
+  currentStatus String? //dropdown
   subStstus  String?
-  academicYear Int //drop down banana hai isko
-  applicationOpenedDate Int //calender
-  applicationSubmittedDate Int //calender
+  academicYear Int? //drop down banana hai isko
+  applicationOpenedDate Int? //calender
+  applicationSubmittedDate Int? //calender
   reopenedApplicationDate Int? //calender
-  appealRequestDate Int //calender
-  applicationDontRecieved Boolean
+  appealRequestDate Int? //calender
+  applicationDontRecieved Boolean?
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 model InstituteMoreDetails {
   id Int @id @default(autoincrement())
@@ -38,6 +62,8 @@ model InstituteMoreDetails {
   womenInstitute Boolean
   LOIorLOIwithLOA String //option
   selfFinancedCourses Boolean
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 model subSection{
   id Int @id @default(autoincrement())
@@ -45,6 +71,8 @@ model subSection{
   typeOfMinistry String //only applicable when minoeity is true
   nameOfMinority String //only applicable when minoeity is true
   nameOfMinorityOfLinguistic String //only applicable when minoeity is true
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 model organisationDetails{
   id Int @id @default(autoincrement())
@@ -61,6 +89,8 @@ model organisationDetails{
   organisationWebsite String
   STDcode Int //6 digit max.
   landlineNumber Int //5-10 digit 
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 model trusteeDetails{
   id Int @id @default(autoincrement())
@@ -70,6 +100,8 @@ model trusteeDetails{
   till String //calender
   mobileNo Int //10 digit only
   email String //valid (end with @gmail.com)
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //contact page page 2
 model contactPerson{
@@ -91,6 +123,8 @@ model contactPerson{
   emailAddress String //check for the valid email
   alternativeEmailAdress String?
   //after filling this a verification appear for the sms/email verification
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //page 3
 model questionnaire{
@@ -99,6 +133,8 @@ model questionnaire{
   ifYesPleaseSelectApprovedProgram String //omly applicable when says yes in first
   whetheTheInstituteIsANonTechnicalInstituteSeekingApprovalForMBAorMCA Boolean
   ifYouAreOnExistingInstitutionRunningPGDMorPGCM Int?
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //page 4
 model programDetails{
@@ -106,6 +142,8 @@ model programDetails{
   programme String //drop down menu
   anyOtherNewProgram String?
   yearOfStart String //calender
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 model courseDetails{
   id Int @id @default(autoincrement())
@@ -122,6 +160,8 @@ model courseDetails{
   applyingFor String 
   modeOFCounduct String //drop down
   courseType String //drop down 
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 // page 5
 //a
@@ -148,6 +188,8 @@ model landDetails{
   //applicable when mortyard is true
   mortgatedPurpose String
   dateIFRegistration String //calender
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //b
 model moreLandInformation{
@@ -162,6 +204,8 @@ model moreLandInformation{
   ownershiporGovernanentLease String //drop down
   landUseCertificateIssued Boolean
   landUseCertificationAuthority String //[only available when Land Certificate issued & yes)
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //c
 model buildingDetails{
@@ -175,6 +219,8 @@ model buildingDetails{
   accessAndCirculationArea Float //in sq feet
   totalBuiltUpAreaPlanned Float //in sq feet
   totalCarpetAreaAmenitiesReady Float //in sq feet
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //d
 model buildingDetailsMoreDetails{
@@ -195,6 +241,8 @@ model buildingDetailsMoreDetails{
   NonAICTEApprovedCoursesRunInTheBuilding String? //if any
   buildingPlanApprovalAuthority String
   buildingPlanApprovalDate String //calender
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //e
 model laboratoryDetails{
@@ -208,6 +256,9 @@ model laboratoryDetails{
   lobMeyerEquipments String
   buildingName String
   buildingNumber Int
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+  
 }
 //f
 model administrativeArea{
@@ -221,6 +272,8 @@ model administrativeArea{
   readinessofWallAndPainting String //ready or not ready
   readinessofElectrificationAndLightning String //ready or not ready
   readinessofFurniture String //ready or not ready
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //g
 model ametiesArea{
@@ -236,6 +289,8 @@ model ametiesArea{
   readinessOfFurniture String //""
   airConditioning String //-Not Available/Planned/Available
   siteChangeFlag Boolean 
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //h
 model circulationArea{
@@ -247,6 +302,8 @@ model circulationArea{
   electrifcationAndLightning String //ready/not ready
   buildingName String
   buildingNumber Int
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 //i
 model instructionalArea{

@@ -13,21 +13,31 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        // ... you will write your Prisma Client queries here
-        yield prisma.user.create({
-            data: {
-                id: 123,
-                currentApplicationNumber: 1234,
-                applicationType: 'TechnicalInstitute',
-                currentStatus: 'New_Institute',
-                academicYear: 2023,
-                applicationOpenedDate: 10,
-                applicationSubmittedDate: 20,
-                reopenedApplicationDate: 26,
-                appealRequestDate: 30,
-                applicationDontRecieved: false
+        try {
+            // Make sure a storage_Ids record with id 1 exists
+            const storageIdsRecord = yield prisma.storage_Ids.findUnique({
+                where: { id: 1 },
+            });
+            if (!storageIdsRecord) {
+                console.error('Error: storage_Ids record with id 1 not found.');
+                return;
             }
-        });
+            // Create an Institute and connect it to the storage_Ids record
+            yield prisma.institute.create({
+                data: {
+                    currentApplicationNumber: 123,
+                    applicationType: "hello",
+                    subStstus: "done",
+                    authorId: 1, // Connect to the existing storage_Ids record with id 1
+                },
+            });
+        }
+        catch (error) {
+            console.error('Error:', console.log(error));
+        }
+        finally {
+            yield prisma.$disconnect();
+        }
     });
 }
 main();
